@@ -1,11 +1,15 @@
 %{
-#include "symbols.hpp"
+#include "codeGenerator.hpp"	
 #include "lex.yy.cpp"
 #define Trace(t) if (Opt_P) cout << "TRACE => " << t << endl;
-int Opt_P = 1;
+bool hasMain = false;
+int Opt_P = 0;
 void yyerror(string s);
 symboltableList symbolTable;
 vector<vector<IDclass> > functions;
+string filename;
+string className;
+ofstream ex;
 %}
 
 /* yylval */
@@ -45,18 +49,24 @@ vector<vector<IDclass> > functions;
 %%
 
 program: 				OBJECT ID
-						{
+						{			
 							Trace("program start");
 							IDclass* c = new IDclass();
 							c->idFlag = objectFlag;	
 							c->idType = None;				
 							symbolTable.insert(*$2,*c);
+							className = *$2;
+							G_object_Start();
 						} 
 						'{' var_const_decs method_decs '}'
-						{
+						{						
 							Trace("End program");
 							symbolTable.dump();
 							symbolTable.pop();
+							G_object_End();
+							if(!hasMain){
+								yyerror("No main exist");
+							}
 						}
 						;
 
@@ -68,10 +78,13 @@ var_const_decs:			const_dec var_const_decs
 /* constant declaration */
 const_dec:				VAL ID ':' var_type '=' expression
 						{
+
 							Trace("VAL ID : var_type = expression");
 							$6->idFlag = constVariableFlag;
 							$6->init = true;
 							if(symbolTable.insert(*$2,*$6) == -1) yyerror("const redefine");
+							int i = symbolTable.getIndex(*$2);
+							
 						}
 						| VAL ID '=' expression
 						{
@@ -86,19 +99,27 @@ var_dec:				VAR ID ':' var_type
 							Trace("VAR ID : var_type");
 							IDclass* c = new IDclass(variableFlag,$4,false);
 							if(symbolTable.insert(*$2,*c) == -1) yyerror("var_dec redefine");
-						}
-						| VAR ID ':' var_type '[' INT_C ']'
-						{
-							Trace("VAR ID ':' var_type '[' INT_C ']'");
-
-							symbolTable.insert(*$2,$4,$6);
+							if($4 == intType || $4 == boolType){
+								int idx = symbolTable.getIndex(*$2);
+								if(idx == -1){
+									G_global_Var(*$2);
+								}
+							}
 						}
 						| VAR ID '=' expression
 						{
 							Trace("VAR ID '=' expression");
 							$4 ->init = true;
 							$4 ->idFlag = variableFlag;
-							symbolTable.insert(*$2,*$4);
+							if(symbolTable.insert(*$2,*$4) == -1) yyerror("var_dec redefine");
+							int idx = symbolTable.getIndex(*$2);
+							int val = $4->getValue();
+							if(idx == -1){
+								G_global_Var_value(*$2,val);
+							}else if(idx>=0){
+								G_local_Var_value(idx,val);
+							}
+
 						}
 						| VAR ID ':' var_type '=' expression
 						{
@@ -106,6 +127,14 @@ var_dec:				VAR ID ':' var_type
 							$6->init = true;
 							$6->idFlag = variableFlag;
 							if(symbolTable.insert(*$2,*$6) == -1 ){yyerror("variable redefine");}
+							int idx = symbolTable.getIndex(*$2);
+							int val = $6->getValue();
+							if(idx == -1){
+								G_global_Var_value(*$2,val);
+							}else if(idx>=0){
+								G_local_Var_value(idx,val);
+							}
+
 						}
 						;			
 /* variable type */
@@ -136,13 +165,30 @@ method_decs:			method_dec method_decs
 method_dec:				DEF ID 
 						{
 							Trace("DEF ID '(' args ')' return_type");
+							
 							IDclass *c = new IDclass(functionFlag,None,false);
 							if(symbolTable.insert(*$2,*c)==-1) yyerror("function redefine");
 							symbolTable.push();
+
 						}
-						'(' args ')' return_type '{' var_const_decs zero_more_staments '}'
+						'(' args ')' return_type '{' 
 						{
 							Trace("method_desc");
+							if(*$2=="main"){
+								hasMain = true;
+								G_main_Start();
+							}else{
+								G_method_Start(*symbolTable.lookup(*$2));
+							}
+						}
+						var_const_decs zero_more_staments '}'
+						{
+							Trace("method end");
+							if(symbolTable.lookup(*$2)->idType == voidType){
+								G_void_method_End();
+							}else{
+								G_block_End();
+							}
 							symbolTable.dump();
 							symbolTable.pop();
 						}
@@ -194,6 +240,11 @@ stament:				ID '=' expression
 							} else{
 								c->init = true;
 								c->setValue(*$3);
+								if (c->idType == intType || c->idType == boolType) {
+                            		int idx = symbolTable.getIndex(*$1);
+                            		if (idx == -1) G_set_global_Var(*$1);
+                            		else G_set_local_Var(idx);
+                          		}
 							}
 						}
 						|  ID '[' expression ']' '=' expression
@@ -498,8 +549,13 @@ void yyerror(string s){
 
 int main(int argc, char *argv[])
 {
+
 if(argc==2){
 	yyin = fopen(argv[1],"r");
+	filename = string(argv[1]);
+	filename += ".jasm";
+	ex.open(filename);
+
 }else{
 	puts("Format error!");
 	return 0 ;

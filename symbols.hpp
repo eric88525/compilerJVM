@@ -22,13 +22,11 @@ public:
 			return -1;
 		}
 		else {
+			cout<<"Now index is "<<index<<"\n";	
 			symbolIndex.push_back(id);
-			tableMap[id].id = id;
-			tableMap[id].idType = c.idType;
-			tableMap[id].idFlag = c.idFlag;
-			tableMap[id].init = c.init;
+			tableMap[id] = c;		
 			tableMap[id].idIndex = index;
-			tableMap[id].setValue(c);
+			tableMap[id].id = id;
 			return index++;
 		}
 	};
@@ -119,7 +117,16 @@ public:
 		}
 		cout << endl;
 	};
-
+	int size(){
+		return symbolIndex.size();
+	}
+	int getIndex(string id){
+		if(hasSymbol(id)){
+			return tableMap[id].idIndex;
+		}else{
+			return 0;
+		}
+	}
 };
 
 class symboltableList
@@ -185,4 +192,23 @@ public:
 		cout << "Now frame is " << stackTop << " adding function arg" << "\n";
 		list[stackTop - 1].addFunctionArg(id, c);
 	};
+	int getIndex(string id){
+		
+		for (int i = stackTop;i>=0;i--){
+			if(list[i].hasSymbol(id)){
+				if(i==0)return -1;
+				else{
+					int ids = 0;
+					for(int j = 1 ;j<i;j++){
+						cout<<"now i is"<<i<<" j is "<<j<<"\n";
+						ids += list[i].size();
+					}
+					cout<<"list["<<i<<"].getIndex = " << list[i].getIndex(id) << " \n";
+					ids += list[i].getIndex(id);
+					cout<<"GEt index :"<<id<<" is "<< ids<<"\n";
+					return ids;
+				}
+			}
+		}
+	}
 };

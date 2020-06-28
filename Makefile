@@ -1,13 +1,7 @@
-ifeq ($(shell uname -s), Darwin)
-	javaa := ./javaa_mac
-else
-	javaa := ./javaa
-endif
-
 all: compiler
 
-compiler: lex.yy.cpp y.tab.cpp symbols.cpp symbols.hpp codegen.cpp codegen.hpp
-	g++ y.tab.cpp symbols.cpp codegen.cpp -o compiler -ll -ly -std=c++11 -Wno-deprecated-register
+compiler: lex.yy.cpp y.tab.cpp	symbols.hpp codeGenerator.hpp
+	g++ y.tab.cpp symbols.hpp codeGenerator.hpp -o compiler -ll -ly -std=c++11 -Wno-deprecated-register
 
 lex.yy.cpp: scanner.l
 	lex -o lex.yy.cpp scanner.l
@@ -19,6 +13,6 @@ clean:
 	rm compiler lex.yy.cpp y.tab.*
 
 run: compiler
-	./compiler $(file).rust
-	$(javaa) $(file).jasm
+	./compiler $(file).scala
+	./javaa_mac $(file).jasm
 	java $(file)

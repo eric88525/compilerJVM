@@ -52,7 +52,7 @@ public:
 	IDclass(const IDclass& c) {
 		idType = c.idType;
 		idFlag = c.idFlag;
-		idIndex = c.idIndex;
+		
 		id = c.id;
 		init = c.init;
 		setValue(c);
@@ -71,6 +71,12 @@ public:
 		idData.sval = c.idData.sval;
 		idData.cval = c.idData.cval;
 		arrayValue = c.arrayValue;
+	}
+	int getValue(){
+		if(idType == boolType){
+			return idData.bval;
+		}
+		return idData.ival;
 	}
 };
 
