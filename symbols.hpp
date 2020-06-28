@@ -91,6 +91,7 @@ public:
 			}
 			if (info.idFlag == functionFlag) {
 				s += "{ ";
+				//
 				for (int i = 0; i < info.arrayValue.size(); ++i) {
 					switch (info.arrayValue[i].idType) {
 					case intType: s += "int "; break;
@@ -210,5 +211,12 @@ public:
 				}
 			}
 		}
+	}
+	bool isGlobal()
+	{	
+  		if (stackTop == 0){
+			return true;
+		}
+  		return false;
 	}
 };

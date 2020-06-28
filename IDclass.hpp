@@ -58,9 +58,9 @@ public:
 		setValue(c);
 	}
 
-	IDclass(int idF, int idT, bool idInit) {
-		idType = idT;
+	IDclass(int idF, int idT, bool idInit) {		
 		idFlag = idF;
+		idType = idT;
 		init = idInit;
 	}
 	~IDclass() {};
@@ -75,10 +75,19 @@ public:
 	int getValue(){
 		if(idType == boolType){
 			return idData.bval;
+		}else if(idType == charType){
+			return idData.cval;
 		}
+
 		return idData.ival;
 	}
 };
+
+bool isConst(IDclass c)
+{
+  if (c.idFlag == constValueFlag || c.idFlag == constVariableFlag) return true;
+  else return false;
+}
 
 IDclass *intConst(int val)
 {
@@ -90,7 +99,7 @@ IDclass *intConst(int val)
 
 IDclass *realConst(float val)
 {
-	IDclass* c = new IDclass(constValueFlag, realType, false);
+	IDclass* c = new IDclass(constValueFlag, realType, true);
 	c->idIndex = 0;
 	c->idData.fval = val;
 	return c;
@@ -98,7 +107,7 @@ IDclass *realConst(float val)
 
 IDclass *boolConst(bool val)
 {
-	IDclass* c = new IDclass(constValueFlag, boolType, false);
+	IDclass* c = new IDclass(constValueFlag, boolType, true);
 	c->idIndex = 0;
 	c->idData.bval = val;
 	return c;
@@ -106,7 +115,7 @@ IDclass *boolConst(bool val)
 
 IDclass *strConst(string *val)
 {
-	IDclass* c = new IDclass(constValueFlag, strType, false);
+	IDclass* c = new IDclass(constValueFlag, strType, true);
 	c->idIndex = 0;
 	c->idData.sval = *val;
 	return c;
@@ -114,7 +123,7 @@ IDclass *strConst(string *val)
 
 IDclass *charConst(char cc)
 {
-	IDclass* c = new IDclass(constValueFlag, charType, false);
+	IDclass* c = new IDclass(constValueFlag, charType, true);
 	c->idIndex = 0;
 	c->idData.cval = cc;
 	return c;

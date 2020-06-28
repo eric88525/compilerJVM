@@ -17,12 +17,13 @@ char *locate;
 DELIMITER               ([,:;()[\]{}])
 ARITHMETIC              ([-+*/%])
 RELATIONAL              ([<>!=])
+CHAR 	\'([A-Za-z0-9])\'
 IDENTIFIER [a-zA-Z]+[0-9]*[A-Za-z]*
 INTEGER [0-9]+
 REAL [0-9]+\.[0-9]+
 IDERROR [0-9]+[A-Za-z]+
 NOTHING "//".*
-CHAR      \'([A-Za-z0-9])\'
+
 STRING                  (\"(\"\"|[^"\n])*\")
 %x C_COMMENT
 
@@ -99,8 +100,8 @@ true            {
          			exit(-1);
          		}
 {CHAR}			{
-					yylval.cval = yytext[0];
-					tokenChar(char(yytext[0]));
+					yylval.cval = yytext[1];
+					tokenChar(char(yytext[1]));
 					return CHAR_C;
 				}
 {STRING} 		{

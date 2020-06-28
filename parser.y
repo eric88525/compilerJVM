@@ -3,7 +3,7 @@
 #include "lex.yy.cpp"
 #define Trace(t) if (Opt_P) cout << "TRACE => " << t << endl;
 bool hasMain = false;
-int Opt_P = 0;
+int Opt_P = 1;
 void yyerror(string s);
 symboltableList symbolTable;
 vector<vector<IDclass> > functions;
@@ -240,37 +240,30 @@ stament:				ID '=' expression
 							} else{
 								c->init = true;
 								c->setValue(*$3);
-								if (c->idType == intType || c->idType == boolType) {
+								if (c->idType == intType || c->idType == boolType || c->idType == charType) {
                             		int idx = symbolTable.getIndex(*$1);
                             		if (idx == -1) G_set_global_Var(*$1);
                             		else G_set_local_Var(idx);
                           		}
 							}
 						}
-						|  ID '[' expression ']' '=' expression
+						| 
 						{
-							Trace("statement: variable[] assignment");
-							IDclass* c = symbolTable.lookup(*$1);
-							if(c == NULL){
-								yyerror("variable array not declare!");
-							}else if(c->idType != arrayType){
-								yyerror("this is not array");
-							}else if(c->idFlag!=variableFlag){
-								yyerror("this is not variable array");
-							}else if($3->idType!=intType){
-								yyerror("ID '[' expression ']' '=' expression , exp is not int");
-							}else{
-								c->init = true;
-								c->arrayValue[$3->idData.ival] = *$6;
-							}
-						}
-						|  PRINT '(' expression ')' 
+							G_print_Start();
+						} 
+						PRINT '(' expression ')' 
 						{
 							Trace("stament: print expression");
+							G_print($4->idType);
 						}
-						|  PRINTLN '(' expression ')'
+						|
+						{
+							G_print_Start();
+						}   
+						PRINTLN '(' expression ')'
 						{
 							Trace("stament: println expression");
+							G_println($4->idType);
 						} 
 						|  READ ID
 						{
@@ -279,10 +272,12 @@ stament:				ID '=' expression
 						|  RETURN
 						{
 							Trace("stament: return");
+							G_Return();
 						}
 						|  RETURN expression
 						{
 							Trace("stament: return expression");
+							G_IReturn();
 						}
 						;
 block:					'{'
@@ -296,17 +291,29 @@ block:					'{'
                         	symbolTable.pop();
                         }
                         ;
-conditional:			IF '(' expression ')' a_block_or_statement ELSE a_block_or_statement	
+conditional:			IF '(' expression ')' if_Start
+						a_block_or_statement ELSE 
+						{
+							G_Else();
+						}
+						a_block_or_statement	
 						{
 							Trace("statement: if else");
 							if($3->idType != boolType )yyerror("condition type error");
+							G_if_else_End();
 						}
-						| IF '(' expression ')' a_block_or_statement
+						|
+						| IF '(' expression ')' if_Start a_block_or_statement
 						{
 							Trace("conditional IF");
 							if($3->idType != boolType) { yyerror("condition type error");}
+							G_if_End();
 						}
-						; 	
+						; 
+if_Start				:
+						{
+							G_if_Start();
+						}	
 a_block_or_statement:	block
 						| stament
 						;
@@ -350,7 +357,7 @@ function_invocation:	ID
                           for (int i = 0; i < para.size(); ++i) {
                             if (para[i].idType != functions[functions.size() - 1].at(i).idType) yyerror("parameter type not match"); /* parameter type check */
                           }
-
+						  G_call_Func(*c);
                           $$ = c;
                           functions.pop_back();
                         }
@@ -376,6 +383,7 @@ func_expression         : expression
 /* constant value */
 const_val               : INT_C
                         {
+							Trace("int const");
                           	$$ = intConst($1);
                         }
                         | FLOAT_C
@@ -388,6 +396,7 @@ const_val               : INT_C
                         }
                         | STRING_C
                         {
+							Trace("str const");
                           	$$ = strConst($1);
                         }
                         | CHAR_C
@@ -398,11 +407,36 @@ const_val               : INT_C
 /* expression */
 expression              : ID
                         {
+							Trace("expression ID");
                           	IDclass *c = symbolTable.lookup(*$1);
                           	if (c == NULL) yyerror("undeclared indentifier"); /* declaration check */
                           	$$ = c;
+							if(!symbolTable.isGlobal() && isConst(*c)){
+								if(c->idType == strType){
+									G_const_Str(c->idData.sval);
+								}else if(c->idType == intType || c->idType == boolType || c->idType == charType){
+									G_const_Int(c->getValue());
+								}
+							}else if(c->idType == intType || c->idType == boolType || c->idType == charType){
+								int idx = symbolTable.getIndex(*$1);
+								if(idx == -1){
+									G_get_global_Var(*$1);
+								}else{
+									G_get_local_Var(idx);
+								}
+								
+							}
                         }
                         | const_val
+						{
+							if(!symbolTable.isGlobal()){
+								if($1->idType == strType){
+									G_const_Str($1->idData.sval);
+								}else if($1->idType == intType || $1->idType == boolType || $1->idType == charType){
+									G_const_Int($1->getValue());
+								}
+							}
+						}
                         | ID '[' expression ']'
                         {
                           	IDclass *c = symbolTable.lookup(*$1);
@@ -419,6 +453,7 @@ expression              : ID
                           	if ($2->idType != intType && $2->idType != realType) yyerror("operator error"); /* operator check */
                           	IDclass *c = new IDclass(variableFlag,$2->idType,true);
                           	$$ = c;
+							if($2->idType == intType) G_Operator('m');
                         }
                         | expression '*' expression
                         {
@@ -428,6 +463,7 @@ expression              : ID
 							IDclass *c = new IDclass(variableFlag,$1->idType,true); 
                           	//c->setValue (*$1 * *$3);
                           	$$ = c;
+							if($1->idType == intType) G_Operator('*');
                         }
                         | expression '/' expression
                         {
@@ -437,6 +473,7 @@ expression              : ID
 							IDclass *c = new IDclass(variableFlag,$1->idType,true); 
                           	//c->setValue (*$1 / *$3);
                           	$$ = c;
+							if($1->idType == intType) G_Operator('/');
                         }
                         | expression '+' expression
                         {
@@ -446,6 +483,7 @@ expression              : ID
 							IDclass *c = new IDclass(variableFlag,$1->idType,true);
 							//c->setValue (*$1 + *$3);
                           	$$ = c;
+							if($1->idType == intType) G_Operator('+');
                         }
                         | expression '-' expression
                         {
@@ -455,8 +493,36 @@ expression              : ID
 							IDclass *c = new IDclass(variableFlag,$1->idType,true); 
                           	//c->setValue (*$1 - *$3);
                           	$$ = c;
+							if($1->idType == intType) G_Operator('-');
                         }
-                        | expression '<' expression
+						| expression '%' expression
+                        {
+                          	Trace("expression - expression");
+                          	if ($1->idType != $3->idType) yyerror("- type not match"); /* type check */ 
+                          	if ($1->idType != intType && $1->idType != realType) yyerror("- operator error"); /* operator check */ 
+							IDclass *c = new IDclass(variableFlag,$1->idType,true); 
+                          	$$ = c;
+							if($1->idType == intType) G_Operator('%');
+                        }
+						| expression AND expression
+                        {
+	                        Trace("expression && expression");
+	                        if ($1->idType != $3->idType) yyerror("AND type not match"); /* type check */
+	                        if ($1->idType != boolType) yyerror("AND operator error"); /* operator check */
+	                        IDclass *c = new IDclass(variableFlag,boolType,true);
+                          	$$ = c;
+							if ($1->idType == boolType) G_Operator('&');
+                        }
+                        | expression OR expression
+                        {
+                          	Trace("expression || expression");
+                          	if ($1->idType != $3->idType) yyerror("OR type not match"); /* type check */
+	                        if ($1->idType != boolType) yyerror("OR operator error"); /* operator check */
+	                        IDclass *c = new IDclass(variableFlag,boolType,true);
+                          	$$ = c;
+							if ($1->idType == boolType) G_Operator('|');
+                        }
+						| expression '<' expression
                         {
                           	Trace("expression < expression");
                           	if ($1->idType != $3->idType) yyerror("< type not match"); /* type check */	
@@ -464,6 +530,7 @@ expression              : ID
 							IDclass *c = new IDclass(variableFlag,boolType,true); 
 							//c->setValue (*$1 < *$3);
                           	$$ = c;	
+							
                         }
                         | expression LE expression
                         {
@@ -514,24 +581,6 @@ expression              : ID
                           	if ($2->idType != boolType) yyerror("!operator error"); /* operator check */                                   
                           	IDclass *c = new IDclass(variableFlag,boolType,true); 
                           	//c->idData.bval = !$2->idData.bval;
-                          	$$ = c;
-                        }
-                        | expression AND expression
-                        {
-	                        Trace("expression && expression");
-	                        if ($1->idType != $3->idType) yyerror("AND type not match"); /* type check */
-	                        if ($1->idType != boolType) yyerror("AND operator error"); /* operator check */
-	                        IDclass *c = new IDclass(variableFlag,boolType,true);
-                          	//c->setValue (*$1 && *$3);
-                          	$$ = c;
-                        }
-                        | expression OR expression
-                        {
-                          	Trace("expression || expression");
-                          	if ($1->idType != $3->idType) yyerror("OR type not match"); /* type check */
-	                        if ($1->idType != boolType) yyerror("OR operator error"); /* operator check */
-	                        IDclass *c = new IDclass(variableFlag,boolType,true);
-                          	//c->setValue (*$1 || *$3);
                           	$$ = c;
                         }
                         | '(' expression ')'
