@@ -251,19 +251,19 @@ stament:				ID '=' expression
 						{
 							G_print_Start();
 						} 
-						PRINT '(' expression ')' 
+						PRINT expression
 						{
 							Trace("stament: print expression");
-							G_print($4->idType);
+							G_print($3 ->idType);
 						}
 						|
 						{
 							G_print_Start();
 						}   
-						PRINTLN '(' expression ')'
+						PRINTLN expression 
 						{
 							Trace("stament: println expression");
-							G_println($4->idType);
+							G_println($3->idType);
 						} 
 						|  READ ID
 						{
@@ -294,36 +294,42 @@ block:					'{'
 conditional:			IF '(' expression ')' if_Start
 						a_block_or_statement ELSE 
 						{
-							G_Else();
+							G_If("else");
 						}
 						a_block_or_statement	
 						{
 							Trace("statement: if else");
 							if($3->idType != boolType )yyerror("condition type error");
-							G_if_else_End();
+							G_If("if_else_end");
 						}
-						|
 						| IF '(' expression ')' if_Start a_block_or_statement
 						{
 							Trace("conditional IF");
 							if($3->idType != boolType) { yyerror("condition type error");}
-							G_if_End();
+							G_If("if_end");
 						}
 						; 
 if_Start				:
 						{
-							G_if_Start();
+							G_If("if_start");
 						}	
 a_block_or_statement:	block
 						| stament
 						;
-loop:					WHILE '(' expression ')' 
+loop:					WHILE '(' 
 						{
 							Trace("while loop start");
-							if($3->idType != boolType) yyerror("Conditional not bool");
-						} a_block_or_statement
+							G_While("while_start");
+						}
+						expression 
+						{
+							if($4->idType!=boolType && $4->idType!=intType) yyerror("condition not bool or int ");
+							G_While("while_con");
+						}
+						')' a_block_or_statement
 						{	
 							Trace("while loop end");
+							G_While("while_end");
 						}	
 						|  FOR '(' ID '<' '-' INT_C TO INT_C ')' 
 						{
@@ -530,7 +536,17 @@ expression              : ID
 							IDclass *c = new IDclass(variableFlag,boolType,true); 
 							//c->setValue (*$1 < *$3);
                           	$$ = c;	
-							
+							G_Compare(IFLT);  
+                        }
+						| expression '>' expression
+                        {
+                          	Trace("expression > expression");
+                          	if ($1->idType != $3->idType) yyerror("> type not match"); /* type check */	
+                          	if ($1->idType != intType && $1->idType != realType && $1->idType != boolType && $1->idType != charType) yyerror("> operator error"); /* operator check */  
+							IDclass *c = new IDclass(variableFlag,boolType,true); 
+							//c->setValue (*$1 > *$3);
+                          	$$ = c;	
+							G_Compare(IFGT);  
                         }
                         | expression LE expression
                         {
@@ -539,15 +555,16 @@ expression              : ID
                           	if ($1->idType != intType && $1->idType != realType && $1->idType != boolType && $1->idType != charType) yyerror("LE operator error"); /* operator check */  
 							IDclass *c = new IDclass(variableFlag,boolType,true); 
 							//c->setValue (*$1 <= *$3);
-                          	$$ = c;	                    
+                          	$$ = c;	 
+							G_Compare(IFLE);                  
                         }
                         | expression EE expression
                         {
                             Trace("expression == expression");
                             if ($1->idType != $3->idType) yyerror("EE type not match"); /* type check */	                         	
 							IDclass *c = new IDclass(variableFlag,boolType,true); 
-							//c->setValue (*$1 == *$3);
                           	$$ = c;	
+							G_Compare(IFEE);  
                         }
                         | expression GE expression
                         {
@@ -557,16 +574,8 @@ expression              : ID
 							IDclass *c = new IDclass(variableFlag,boolType,true); 
 							//c->setValue (*$1 >= *$3);
                           	$$ = c;	
-                        }
-                        | expression '>' expression
-                        {
-                          	Trace("expression > expression");
-                          	if ($1->idType != $3->idType) yyerror("> type not match"); /* type check */	
-                          	if ($1->idType != intType && $1->idType != realType && $1->idType != boolType && $1->idType != charType) yyerror("> operator error"); /* operator check */  
-							IDclass *c = new IDclass(variableFlag,boolType,false); 
-							//c->setValue (*$1 > *$3);
-                          	$$ = c;	
-                        }
+							G_Compare(IFGE);  
+                        }                       
                         | expression NE expression
                         {
                           	Trace("expression != expression");
@@ -574,6 +583,7 @@ expression              : ID
 							IDclass *c = new IDclass(variableFlag,boolType,true); 
 							//c->setValue (*$1 != *$3);
                           	$$ = c;	
+							G_Compare(IFNE);  
                         }
                         | '!' expression
                         {
@@ -582,11 +592,13 @@ expression              : ID
                           	IDclass *c = new IDclass(variableFlag,boolType,true); 
                           	//c->idData.bval = !$2->idData.bval;
                           	$$ = c;
+							G_Operator('!');
                         }
                         | '(' expression ')'
                         {
                           	Trace("(expression)");
                           	$$ = $2;
+
                         }
                         ;			
 %%
