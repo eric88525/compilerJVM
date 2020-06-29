@@ -92,7 +92,7 @@ bool isConst(IDclass c)
 IDclass *intConst(int val)
 {
 	IDclass* c = new IDclass(constValueFlag, intType, true);
-	c->idIndex = 0;
+	
 	c->idData.ival = val;
 	return c;
 }
@@ -100,7 +100,7 @@ IDclass *intConst(int val)
 IDclass *realConst(float val)
 {
 	IDclass* c = new IDclass(constValueFlag, realType, true);
-	c->idIndex = 0;
+	
 	c->idData.fval = val;
 	return c;
 }
@@ -108,7 +108,7 @@ IDclass *realConst(float val)
 IDclass *boolConst(bool val)
 {
 	IDclass* c = new IDclass(constValueFlag, boolType, true);
-	c->idIndex = 0;
+
 	c->idData.bval = val;
 	return c;
 }
@@ -116,7 +116,7 @@ IDclass *boolConst(bool val)
 IDclass *strConst(string *val)
 {
 	IDclass* c = new IDclass(constValueFlag, strType, true);
-	c->idIndex = 0;
+	
 	c->idData.sval = *val;
 	return c;
 }
@@ -124,7 +124,7 @@ IDclass *strConst(string *val)
 IDclass *charConst(char cc)
 {
 	IDclass* c = new IDclass(constValueFlag, charType, true);
-	c->idIndex = 0;
+
 	c->idData.cval = cc;
 	return c;
 }

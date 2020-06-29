@@ -3,7 +3,7 @@
 #include "lex.yy.cpp"
 #define Trace(t) if (Opt_P) cout << "TRACE => " << t << endl;
 bool hasMain = false;
-int Opt_P = 1;
+int Opt_P = 0;
 void yyerror(string s);
 symboltableList symbolTable;
 vector<vector<IDclass> > functions;
@@ -137,14 +137,14 @@ var_dec:				VAR ID ':' var_type
 						}
 						| VAR ID
 						{
-							Trace("ID");
+							Trace("var id");
 							IDclass* c = new IDclass(variableFlag,None,false);
 							if(symbolTable.insert(*$2,*c) == -1) yyerror("var_dec redefine");
 							int idx = symbolTable.getIndex(*$2);
-							int val = $4->getValue();
 							if(idx == -1){
-								G_global_Var_value(*$2,0);
-							}else if(idx>=0){
+								G_global_Var(*$2);
+							}else if(idx >= 0){
+								G_const_Int(0);
 								G_local_Var_value(idx,0);
 							}
 						}
@@ -247,12 +247,14 @@ stament:				ID '=' expression
 								yyerror("variable not declare!");
 							}else if(c->idFlag!=variableFlag){
 								yyerror("this is not variable");
-							}else if(c->idType != $3->idType 	&& c->idType!=None){
+							}else if(c->idType != $3->idType && c->idType!=None){
 								yyerror("variable type not the same");
 							} else{
+								if(c->idType==None){
+									c -> idType = $3->idType;
+								}
 								c->init = true;
-								c->setValue(*$3);
-								c -> idType = $3->idType;
+								c->setValue(*$3);	
 								if (c->idType == intType || c->idType == boolType || c->idType == charType) {
                             		int idx = symbolTable.getIndex(*$1);
                             		if (idx == -1) G_set_global_Var(*$1);
@@ -441,6 +443,7 @@ expression              : ID
 								if(idx == -1){
 									G_get_global_Var(*$1);
 								}else{
+									cout<<*$1<<":idx is========"<<idx<<"\n";
 									G_get_local_Var(idx);
 								}
 								

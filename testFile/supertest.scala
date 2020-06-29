@@ -1,6 +1,8 @@
 object supertest
 {
+	var testt :int =10
 	def loop(n: int): int
+	
 	{
 		var ans = 0
 		var i:int = 0
@@ -17,7 +19,7 @@ object supertest
 		return ans
 	}
 
-	def _if(a: int)
+	def xx(a: int)
 	{
 		if(a<10)
 		{
@@ -36,6 +38,6 @@ object supertest
 		sum = loop(10)
 		println(sum)
 
-		_if(20)
+		xx(20)
 	}
 }

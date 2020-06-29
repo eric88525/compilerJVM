@@ -1,5 +1,5 @@
 class global{
-	method public static int globall()
+	method public static int add()
 	max_stack 15
 	max_locals 15
 	{
@@ -44,3 +44,13 @@ L6:
 	max_stack 15
 	max_locals 15
 	{
+		sipush 0
+		istore 0
+		invokestatic int global.add()
+		istore 0
+		getstatic java.io.PrintStream java.lang.System.out
+		iload 0
+		invokevirtual void java.io.PrintStream.println(boolean)
+		return
+	}
+}

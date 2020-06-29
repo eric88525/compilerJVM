@@ -20,9 +20,6 @@ if(a>5){
 while(a==5 || a==3 && a!=4){
   println (c)
 }
-for(c<- 1 to 10){
-  println (c)
-}
 c = a*3
 println (c)
 }

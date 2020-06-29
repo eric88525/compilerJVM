@@ -385,22 +385,19 @@ void G_While(string mode)
   if (mode == "while_start")
   {
     lm.pushNLabel(1);
-    ex << "\n"
-       << "L" << lm.takeLabel(0) << ":"
-       << "\n";
+    ex << "\t\tnop" << endl
+       << "L" << lm.takeLabel(0) << ":" << endl;
   }
   else if (mode == "while_con")
   {
     lm.NLabel(1);
-    ex << "\t\tifeq L" << lm.takeLabel(3 + lm.getFlag()) << "\n";
+    ex << "\t\tifeq L" << lm.takeLabel(3 + lm.getFlag()) << endl;
   }
   else if (mode == "while_end")
   {
-    ex << "\t\tgoto L" << lm.takeLabel(lm.getFlag()) << "\n";
-    ex << "\n"
-       << "L" << lm.takeLabel(3 + lm.getFlag()) << ":"
-       << "\n";
+    ex << "\t\tgoto L" << lm.takeLabel(lm.getFlag()) << endl;
+    ex << "\t\tnop" << endl
+       << "L" << lm.takeLabel(3 + lm.getFlag()) << ":" << endl;
     lm.popLabel();
   }
 }
-

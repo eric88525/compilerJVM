@@ -68,7 +68,7 @@
 #include "lex.yy.cpp"
 #define Trace(t) if (Opt_P) cout << "TRACE => " << t << endl;
 bool hasMain = false;
-int Opt_P = 1;
+int Opt_P = 0;
 void yyerror(string s);
 symboltableList symbolTable;
 vector<vector<IDclass> > functions;
@@ -478,7 +478,7 @@ union yyalloc
 /* YYNNTS -- Number of nonterminals.  */
 #define YYNNTS  37
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  88
+#define YYNRULES  89
 /* YYNSTATES -- Number of states.  */
 #define YYNSTATES  171
 
@@ -531,14 +531,14 @@ static const yytype_uint8 yytranslate[] =
 static const yytype_uint16 yyrline[] =
 {
        0,    52,    52,    51,    73,    74,    75,    79,    89,    97,
-     109,   124,   141,   145,   149,   153,   157,   162,   163,   166,
-     175,   165,   196,   197,   199,   206,   208,   214,   219,   220,
-     222,   224,   225,   226,   227,   228,   230,   251,   251,   260,
-     260,   268,   272,   277,   284,   283,   296,   294,   305,   313,
-     316,   317,   320,   325,   319,   335,   334,   351,   350,   374,
-     375,   379,   380,   384,   390,   395,   399,   403,   408,   414,
-     436,   446,   455,   456,   464,   474,   484,   494,   504,   513,
-     522,   531,   541,   551,   561,   569,   579,   588,   597
+     109,   124,   138,   153,   157,   161,   165,   169,   174,   175,
+     178,   187,   177,   208,   209,   211,   218,   220,   226,   231,
+     232,   234,   236,   237,   238,   239,   240,   242,   266,   266,
+     275,   275,   283,   287,   292,   299,   298,   311,   309,   320,
+     328,   331,   332,   335,   340,   334,   350,   349,   366,   365,
+     389,   390,   394,   395,   399,   405,   410,   414,   418,   423,
+     429,   452,   462,   471,   472,   480,   490,   500,   510,   520,
+     529,   538,   547,   557,   567,   577,   585,   595,   604,   613
 };
 #endif
 
@@ -584,7 +584,7 @@ static const yytype_uint16 yytoknum[] =
 #define yypact_value_is_default(Yystate) \
   (!!((Yystate) == (-85)))
 
-#define YYTABLE_NINF -58
+#define YYTABLE_NINF -59
 
 #define yytable_value_is_error(Yytable_value) \
   0
@@ -619,23 +619,23 @@ static const yytype_int16 yypact[] =
 static const yytype_uint8 yydefact[] =
 {
        0,     0,     0,     2,     1,     0,     6,     0,     0,     0,
-       6,     6,     0,     0,     0,     0,    18,     4,     5,     0,
-       0,     0,     0,    19,     3,    17,    14,    16,    13,    12,
-      15,     0,    69,    64,    65,    66,    67,    68,     0,     0,
-       0,    72,    70,     8,     9,    10,     0,     0,     0,     0,
-      87,    73,     0,     0,     0,     0,     0,     0,     0,     0,
-       0,     0,     0,     0,     0,     0,     0,    25,     7,     0,
-      60,    88,    84,    83,    85,    86,    80,    79,    81,    82,
-      76,    77,    74,    75,    78,    11,     0,     0,    23,    71,
-       0,    59,    62,    63,     0,    27,    25,    58,     0,    24,
-       0,     0,    22,    61,    26,    20,     6,    29,     0,     0,
-      42,     0,     0,    57,    44,     0,    29,    31,     0,     0,
-      32,    33,    34,    35,     0,     0,    43,    52,    41,     0,
-       6,    21,    28,     0,     0,     0,     0,     0,    36,    37,
-       0,     0,     0,    49,    53,     0,    29,     0,     0,     0,
-      37,     0,    45,    30,    38,    40,     0,     0,    51,    50,
-      48,    37,     0,    46,    54,     0,    37,    55,    47,    37,
-      56
+       6,     6,     0,    12,     0,     0,    19,     4,     5,     0,
+       0,     0,     0,    20,     3,    18,    15,    17,    14,    13,
+      16,     0,    70,    65,    66,    67,    68,    69,     0,     0,
+       0,    73,    71,     8,     9,    10,     0,     0,     0,     0,
+      88,    74,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,    26,     7,     0,
+      61,    89,    85,    84,    86,    87,    81,    80,    82,    83,
+      77,    78,    75,    76,    79,    11,     0,     0,    24,    72,
+       0,    60,    63,    64,     0,    28,    26,    59,     0,    25,
+       0,     0,    23,    62,    27,    21,     6,    30,     0,     0,
+      43,     0,     0,    58,    45,     0,    30,    32,     0,     0,
+      33,    34,    35,    36,     0,     0,    44,    53,    42,     0,
+       6,    22,    29,     0,     0,     0,     0,     0,    37,    38,
+       0,     0,     0,    50,    54,     0,    30,     0,     0,     0,
+      38,     0,    46,    31,    39,    41,     0,     0,    52,    51,
+      49,    38,     0,    47,    55,     0,    38,    56,    48,    38,
+      57
 };
 
   /* YYPGOTO[NTERM-NUM].  */
@@ -663,7 +663,7 @@ static const yytype_int16 yytable[] =
 {
       43,     1,    45,    17,    18,    44,    53,    54,    55,    56,
       57,    58,    53,    54,    55,    56,    57,    58,    50,    51,
-      52,   -57,     7,     8,    48,    19,    20,    68,    69,    53,
+      52,   -58,     7,     8,    48,    19,    20,    68,    69,    53,
       54,    55,    56,    72,    73,    74,    75,    76,    77,    78,
       79,    80,    81,    82,    83,    84,    85,    59,    60,    61,
       62,    63,    64,    59,    60,    61,    62,    63,    64,    71,
@@ -677,14 +677,14 @@ static const yytype_int16 yytable[] =
      170,   100,    59,    60,    61,    62,    63,    64,    53,    54,
       55,    56,    57,    58,   143,   124,   125,   127,    65,   128,
      129,    59,    60,    61,    62,    63,    64,    53,    54,    55,
-      56,    57,    58,   154,   133,   123,   -39,    65,   110,   131,
+      56,    57,    58,   154,   133,   123,   -40,    65,   110,   131,
      134,   135,   142,   140,   123,   112,   141,   149,   157,    59,
       60,    61,    62,    63,    64,    53,    54,    55,    56,   152,
       58,   155,   114,   156,   161,    65,   162,   123,    59,    60,
-      61,    62,    63,    64,   123,   108,   109,   163,   165,   -37,
-     -39,    25,   110,   167,    65,   102,   146,     0,   111,   112,
+      61,    62,    63,    64,   123,   108,   109,   163,   165,   -38,
+     -40,    25,   110,   167,    65,   102,   146,     0,   111,   112,
      103,     0,   113,     0,   159,     0,    59,    60,    61,    62,
-      63,    64,   108,   109,     0,   159,   114,   -39,     0,   110,
+      63,    64,   108,   109,     0,   159,   114,   -40,     0,   110,
      159,     0,    65,   159,     0,   111,   112,     0,     0,   113,
       32,    33,    34,    35,    36,    37,    38,     0,     0,     0,
       39,     0,     0,   114,    61,    62,    63,    64,    40,     0,
@@ -751,28 +751,28 @@ static const yytype_uint8 yystos[] =
 static const yytype_uint8 yyr1[] =
 {
        0,    61,    63,    62,    64,    64,    64,    65,    65,    66,
-      66,    66,    67,    67,    67,    67,    67,    68,    68,    70,
-      71,    69,    72,    72,    73,    73,    74,    74,    75,    75,
-      76,    77,    77,    77,    77,    77,    78,    79,    78,    80,
-      78,    78,    78,    78,    82,    81,    84,    83,    83,    85,
-      86,    86,    88,    89,    87,    90,    87,    92,    91,    93,
-      93,    94,    94,    95,    96,    96,    96,    96,    96,    97,
+      66,    66,    66,    67,    67,    67,    67,    67,    68,    68,
+      70,    71,    69,    72,    72,    73,    73,    74,    74,    75,
+      75,    76,    77,    77,    77,    77,    77,    78,    79,    78,
+      80,    78,    78,    78,    78,    82,    81,    84,    83,    83,
+      85,    86,    86,    88,    89,    87,    90,    87,    92,    91,
+      93,    93,    94,    94,    95,    96,    96,    96,    96,    96,
       97,    97,    97,    97,    97,    97,    97,    97,    97,    97,
-      97,    97,    97,    97,    97,    97,    97,    97,    97
+      97,    97,    97,    97,    97,    97,    97,    97,    97,    97
 };
 
   /* YYR2[YYN] -- Number of symbols on the right hand side of rule YYN.  */
 static const yytype_uint8 yyr2[] =
 {
        0,     2,     0,     7,     2,     2,     0,     6,     4,     4,
-       4,     6,     1,     1,     1,     1,     1,     2,     1,     0,
-       0,    12,     3,     1,     3,     0,     2,     0,     2,     0,
-       2,     1,     1,     1,     1,     1,     3,     0,     5,     0,
-       5,     2,     1,     2,     0,     5,     0,     9,     6,     0,
-       1,     1,     0,     0,     7,     0,    11,     0,     5,     1,
-       0,     3,     1,     1,     1,     1,     1,     1,     1,     1,
-       1,     4,     1,     2,     3,     3,     3,     3,     3,     3,
-       3,     3,     3,     3,     3,     3,     3,     2,     3
+       4,     6,     2,     1,     1,     1,     1,     1,     2,     1,
+       0,     0,    12,     3,     1,     3,     0,     2,     0,     2,
+       0,     2,     1,     1,     1,     1,     1,     3,     0,     5,
+       0,     5,     2,     1,     2,     0,     5,     0,     9,     6,
+       0,     1,     1,     0,     0,     7,     0,    11,     0,     5,
+       1,     0,     3,     1,     1,     1,     1,     1,     1,     1,
+       1,     1,     4,     1,     2,     3,     3,     3,     3,     3,
+       3,     3,     3,     3,     3,     3,     3,     3,     2,     3
 };
 
 
@@ -1550,53 +1550,69 @@ yyreduce:
 							}else if(idx>=0){
 								G_local_Var_value(idx,val);
 							}
-
 						}
-#line 1556 "y.tab.cpp" /* yacc.c:1646  */
+#line 1555 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 12:
-#line 142 "parser.y" /* yacc.c:1646  */
+#line 139 "parser.y" /* yacc.c:1646  */
     {
-                          (yyval.type) = intType;
-                        }
-#line 1564 "y.tab.cpp" /* yacc.c:1646  */
-    break;
-
-  case 13:
-#line 146 "parser.y" /* yacc.c:1646  */
-    {
-                          (yyval.type) = realType;
-                        }
+							Trace("var id");
+							IDclass* c = new IDclass(variableFlag,None,false);
+							if(symbolTable.insert(*(yyvsp[0].sval),*c) == -1) yyerror("var_dec redefine");
+							int idx = symbolTable.getIndex(*(yyvsp[0].sval));
+							if(idx == -1){
+								G_global_Var(*(yyvsp[0].sval));
+							}else if(idx >= 0){
+								G_const_Int(0);
+								G_local_Var_value(idx,0);
+							}
+						}
 #line 1572 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
-  case 14:
-#line 150 "parser.y" /* yacc.c:1646  */
+  case 13:
+#line 154 "parser.y" /* yacc.c:1646  */
     {
-                          (yyval.type) = boolType;
+                          (yyval.type) = intType;
                         }
 #line 1580 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
-  case 15:
-#line 154 "parser.y" /* yacc.c:1646  */
+  case 14:
+#line 158 "parser.y" /* yacc.c:1646  */
     {
-                          (yyval.type) = strType;
+                          (yyval.type) = realType;
                         }
 #line 1588 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
-  case 16:
-#line 158 "parser.y" /* yacc.c:1646  */
+  case 15:
+#line 162 "parser.y" /* yacc.c:1646  */
     {
-                          (yyval.type) = charType;
+                          (yyval.type) = boolType;
                         }
 #line 1596 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
-  case 19:
+  case 16:
 #line 166 "parser.y" /* yacc.c:1646  */
+    {
+                          (yyval.type) = strType;
+                        }
+#line 1604 "y.tab.cpp" /* yacc.c:1646  */
+    break;
+
+  case 17:
+#line 170 "parser.y" /* yacc.c:1646  */
+    {
+                          (yyval.type) = charType;
+                        }
+#line 1612 "y.tab.cpp" /* yacc.c:1646  */
+    break;
+
+  case 20:
+#line 178 "parser.y" /* yacc.c:1646  */
     {
 							Trace("DEF ID '(' args ')' return_type");
 							
@@ -1605,11 +1621,11 @@ yyreduce:
 							symbolTable.push();
 
 						}
-#line 1609 "y.tab.cpp" /* yacc.c:1646  */
+#line 1625 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
-  case 20:
-#line 175 "parser.y" /* yacc.c:1646  */
+  case 21:
+#line 187 "parser.y" /* yacc.c:1646  */
     {
 							Trace("method_desc");
 							if(*(yyvsp[-6].sval)=="main"){
@@ -1619,11 +1635,11 @@ yyreduce:
 								G_method_Start(*symbolTable.lookup(*(yyvsp[-6].sval)));
 							}
 						}
-#line 1623 "y.tab.cpp" /* yacc.c:1646  */
+#line 1639 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
-  case 21:
-#line 185 "parser.y" /* yacc.c:1646  */
+  case 22:
+#line 197 "parser.y" /* yacc.c:1646  */
     {
 							Trace("method end");
 							if(symbolTable.lookup(*(yyvsp[-10].sval))->idType == voidType){
@@ -1634,40 +1650,40 @@ yyreduce:
 							symbolTable.dump();
 							symbolTable.pop();
 						}
-#line 1638 "y.tab.cpp" /* yacc.c:1646  */
+#line 1654 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
-  case 24:
-#line 200 "parser.y" /* yacc.c:1646  */
+  case 25:
+#line 212 "parser.y" /* yacc.c:1646  */
     {
     						Trace("Add function arg");
         					IDclass* c = new IDclass(variableFlag,(yyvsp[0].type),false);
         					if(symbolTable.insert(*(yyvsp[-2].sval),*c) == -1) yyerror("variable redefine");
         					symbolTable.addFunctionArg(*(yyvsp[-2].sval), *c);
     					}
-#line 1649 "y.tab.cpp" /* yacc.c:1646  */
+#line 1665 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
-  case 26:
-#line 209 "parser.y" /* yacc.c:1646  */
+  case 27:
+#line 221 "parser.y" /* yacc.c:1646  */
     {
 							Trace("return_type':' var_type");
 							symbolTable.setFunctionType((yyvsp[0].type));
 						}
-#line 1658 "y.tab.cpp" /* yacc.c:1646  */
+#line 1674 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
-  case 27:
-#line 214 "parser.y" /* yacc.c:1646  */
+  case 28:
+#line 226 "parser.y" /* yacc.c:1646  */
     {
 							Trace("return_type':' None");
 							symbolTable.setFunctionType(voidType);
 						}
-#line 1667 "y.tab.cpp" /* yacc.c:1646  */
+#line 1683 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
-  case 36:
-#line 231 "parser.y" /* yacc.c:1646  */
+  case 37:
+#line 243 "parser.y" /* yacc.c:1646  */
     {
 							Trace("statement: variable assignment");
 							IDclass* c = symbolTable.lookup(*(yyvsp[-2].sval));
@@ -1675,11 +1691,14 @@ yyreduce:
 								yyerror("variable not declare!");
 							}else if(c->idFlag!=variableFlag){
 								yyerror("this is not variable");
-							}else if(c->idType != (yyvsp[0].idClassval)->idType){
+							}else if(c->idType != (yyvsp[0].idClassval)->idType && c->idType!=None){
 								yyerror("variable type not the same");
 							} else{
+								if(c->idType==None){
+									c -> idType = (yyvsp[0].idClassval)->idType;
+								}
 								c->init = true;
-								c->setValue(*(yyvsp[0].idClassval));
+								c->setValue(*(yyvsp[0].idClassval));	
 								if (c->idType == intType || c->idType == boolType || c->idType == charType) {
                             		int idx = symbolTable.getIndex(*(yyvsp[-2].sval));
                             		if (idx == -1) G_set_global_Var(*(yyvsp[-2].sval));
@@ -1687,152 +1706,152 @@ yyreduce:
                           		}
 							}
 						}
-#line 1691 "y.tab.cpp" /* yacc.c:1646  */
-    break;
-
-  case 37:
-#line 251 "parser.y" /* yacc.c:1646  */
-    {
-							G_print_Start();
-						}
-#line 1699 "y.tab.cpp" /* yacc.c:1646  */
+#line 1710 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 38:
-#line 255 "parser.y" /* yacc.c:1646  */
+#line 266 "parser.y" /* yacc.c:1646  */
+    {
+							G_print_Start();
+						}
+#line 1718 "y.tab.cpp" /* yacc.c:1646  */
+    break;
+
+  case 39:
+#line 270 "parser.y" /* yacc.c:1646  */
     {
 							Trace("stament: print expression");
 							G_print((yyvsp[-1].idClassval) ->idType);
 						}
-#line 1708 "y.tab.cpp" /* yacc.c:1646  */
-    break;
-
-  case 39:
-#line 260 "parser.y" /* yacc.c:1646  */
-    {
-							G_print_Start();
-						}
-#line 1716 "y.tab.cpp" /* yacc.c:1646  */
+#line 1727 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 40:
-#line 264 "parser.y" /* yacc.c:1646  */
+#line 275 "parser.y" /* yacc.c:1646  */
+    {
+							G_print_Start();
+						}
+#line 1735 "y.tab.cpp" /* yacc.c:1646  */
+    break;
+
+  case 41:
+#line 279 "parser.y" /* yacc.c:1646  */
     {
 							Trace("stament: println expression");
 							G_println((yyvsp[-1].idClassval)->idType);
 						}
-#line 1725 "y.tab.cpp" /* yacc.c:1646  */
-    break;
-
-  case 41:
-#line 269 "parser.y" /* yacc.c:1646  */
-    {
-							Trace("Read id");
-						}
-#line 1733 "y.tab.cpp" /* yacc.c:1646  */
+#line 1744 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 42:
-#line 273 "parser.y" /* yacc.c:1646  */
+#line 284 "parser.y" /* yacc.c:1646  */
+    {
+							Trace("Read id");
+						}
+#line 1752 "y.tab.cpp" /* yacc.c:1646  */
+    break;
+
+  case 43:
+#line 288 "parser.y" /* yacc.c:1646  */
     {
 							Trace("stament: return");
 							G_Return();
 						}
-#line 1742 "y.tab.cpp" /* yacc.c:1646  */
+#line 1761 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
-  case 43:
-#line 278 "parser.y" /* yacc.c:1646  */
+  case 44:
+#line 293 "parser.y" /* yacc.c:1646  */
     {
 							Trace("stament: return expression");
 							G_IReturn();
 						}
-#line 1751 "y.tab.cpp" /* yacc.c:1646  */
+#line 1770 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
-  case 44:
-#line 284 "parser.y" /* yacc.c:1646  */
+  case 45:
+#line 299 "parser.y" /* yacc.c:1646  */
     {
 							Trace("Block start");
 							symbolTable.push();
 						}
-#line 1760 "y.tab.cpp" /* yacc.c:1646  */
+#line 1779 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
-  case 45:
-#line 289 "parser.y" /* yacc.c:1646  */
+  case 46:
+#line 304 "parser.y" /* yacc.c:1646  */
     {
                         	symbolTable.dump();
                         	symbolTable.pop();
                         }
-#line 1769 "y.tab.cpp" /* yacc.c:1646  */
-    break;
-
-  case 46:
-#line 296 "parser.y" /* yacc.c:1646  */
-    {
-							G_If("else");
-						}
-#line 1777 "y.tab.cpp" /* yacc.c:1646  */
+#line 1788 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 47:
-#line 300 "parser.y" /* yacc.c:1646  */
+#line 311 "parser.y" /* yacc.c:1646  */
+    {
+							G_If("else");
+						}
+#line 1796 "y.tab.cpp" /* yacc.c:1646  */
+    break;
+
+  case 48:
+#line 315 "parser.y" /* yacc.c:1646  */
     {
 							Trace("statement: if else");
 							if((yyvsp[-6].idClassval)->idType != boolType )yyerror("condition type error");
 							G_If("if_else_end");
 						}
-#line 1787 "y.tab.cpp" /* yacc.c:1646  */
+#line 1806 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
-  case 48:
-#line 306 "parser.y" /* yacc.c:1646  */
+  case 49:
+#line 321 "parser.y" /* yacc.c:1646  */
     {
 							Trace("conditional IF");
 							if((yyvsp[-3].idClassval)->idType != boolType) { yyerror("condition type error");}
 							G_If("if_end");
 						}
-#line 1797 "y.tab.cpp" /* yacc.c:1646  */
+#line 1816 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
-  case 49:
-#line 313 "parser.y" /* yacc.c:1646  */
+  case 50:
+#line 328 "parser.y" /* yacc.c:1646  */
     {
 							G_If("if_start");
 						}
-#line 1805 "y.tab.cpp" /* yacc.c:1646  */
+#line 1824 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
-  case 52:
-#line 320 "parser.y" /* yacc.c:1646  */
+  case 53:
+#line 335 "parser.y" /* yacc.c:1646  */
     {
 							Trace("while loop start");
 							G_While("while_start");
 						}
-#line 1814 "y.tab.cpp" /* yacc.c:1646  */
+#line 1833 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
-  case 53:
-#line 325 "parser.y" /* yacc.c:1646  */
+  case 54:
+#line 340 "parser.y" /* yacc.c:1646  */
     {
 							if((yyvsp[0].idClassval)->idType!=boolType && (yyvsp[0].idClassval)->idType!=intType) yyerror("condition not bool or int ");
 							G_While("while_con");
 						}
-#line 1823 "y.tab.cpp" /* yacc.c:1646  */
+#line 1842 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
-  case 54:
-#line 330 "parser.y" /* yacc.c:1646  */
+  case 55:
+#line 345 "parser.y" /* yacc.c:1646  */
     {	
 							Trace("while loop end");
 							G_While("while_end");
 						}
-#line 1832 "y.tab.cpp" /* yacc.c:1646  */
+#line 1851 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
-  case 55:
-#line 335 "parser.y" /* yacc.c:1646  */
+  case 56:
+#line 350 "parser.y" /* yacc.c:1646  */
     {
 							Trace("For loop start");
 							IDclass* c = symbolTable.lookup(*(yyvsp[-6].sval));
@@ -1844,27 +1863,27 @@ yyreduce:
 								yyerror("variable in for can only be int");
 							} 
 						}
-#line 1848 "y.tab.cpp" /* yacc.c:1646  */
-    break;
-
-  case 56:
-#line 346 "parser.y" /* yacc.c:1646  */
-    {
-							Trace("For loop end");
-						}
-#line 1856 "y.tab.cpp" /* yacc.c:1646  */
+#line 1867 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 57:
-#line 351 "parser.y" /* yacc.c:1646  */
+#line 361 "parser.y" /* yacc.c:1646  */
     {
-							functions.push_back(vector<IDclass>());
+							Trace("For loop end");
 						}
-#line 1864 "y.tab.cpp" /* yacc.c:1646  */
+#line 1875 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 58:
-#line 355 "parser.y" /* yacc.c:1646  */
+#line 366 "parser.y" /* yacc.c:1646  */
+    {
+							functions.push_back(vector<IDclass>());
+						}
+#line 1883 "y.tab.cpp" /* yacc.c:1646  */
+    break;
+
+  case 59:
+#line 370 "parser.y" /* yacc.c:1646  */
     {
                           Trace("statement: function invocation");
                           IDclass *c = symbolTable.lookup(*(yyvsp[-4].sval));
@@ -1880,61 +1899,61 @@ yyreduce:
                           (yyval.idClassval) = c;
                           functions.pop_back();
                         }
-#line 1884 "y.tab.cpp" /* yacc.c:1646  */
-    break;
-
-  case 63:
-#line 385 "parser.y" /* yacc.c:1646  */
-    {
-                          	functions[functions.size() - 1].push_back(*(yyvsp[0].idClassval));
-                        }
-#line 1892 "y.tab.cpp" /* yacc.c:1646  */
+#line 1903 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 64:
-#line 391 "parser.y" /* yacc.c:1646  */
+#line 400 "parser.y" /* yacc.c:1646  */
+    {
+                          	functions[functions.size() - 1].push_back(*(yyvsp[0].idClassval));
+                        }
+#line 1911 "y.tab.cpp" /* yacc.c:1646  */
+    break;
+
+  case 65:
+#line 406 "parser.y" /* yacc.c:1646  */
     {
 							Trace("int const");
                           	(yyval.idClassval) = intConst((yyvsp[0].ival));
                         }
-#line 1901 "y.tab.cpp" /* yacc.c:1646  */
-    break;
-
-  case 65:
-#line 396 "parser.y" /* yacc.c:1646  */
-    {
-                          	(yyval.idClassval) = realConst((yyvsp[0].fval));
-                        }
-#line 1909 "y.tab.cpp" /* yacc.c:1646  */
+#line 1920 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 66:
-#line 400 "parser.y" /* yacc.c:1646  */
+#line 411 "parser.y" /* yacc.c:1646  */
     {
-                          	(yyval.idClassval) = boolConst((yyvsp[0].bval));
+                          	(yyval.idClassval) = realConst((yyvsp[0].fval));
                         }
-#line 1917 "y.tab.cpp" /* yacc.c:1646  */
+#line 1928 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 67:
-#line 404 "parser.y" /* yacc.c:1646  */
+#line 415 "parser.y" /* yacc.c:1646  */
+    {
+                          	(yyval.idClassval) = boolConst((yyvsp[0].bval));
+                        }
+#line 1936 "y.tab.cpp" /* yacc.c:1646  */
+    break;
+
+  case 68:
+#line 419 "parser.y" /* yacc.c:1646  */
     {
 							Trace("str const");
                           	(yyval.idClassval) = strConst((yyvsp[0].sval));
                         }
-#line 1926 "y.tab.cpp" /* yacc.c:1646  */
-    break;
-
-  case 68:
-#line 409 "parser.y" /* yacc.c:1646  */
-    {
-                        	(yyval.idClassval) = charConst((yyvsp[0].cval));
-                        }
-#line 1934 "y.tab.cpp" /* yacc.c:1646  */
+#line 1945 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 69:
-#line 415 "parser.y" /* yacc.c:1646  */
+#line 424 "parser.y" /* yacc.c:1646  */
+    {
+                        	(yyval.idClassval) = charConst((yyvsp[0].cval));
+                        }
+#line 1953 "y.tab.cpp" /* yacc.c:1646  */
+    break;
+
+  case 70:
+#line 430 "parser.y" /* yacc.c:1646  */
     {
 							Trace("expression ID");
                           	IDclass *c = symbolTable.lookup(*(yyvsp[0].sval));
@@ -1951,16 +1970,17 @@ yyreduce:
 								if(idx == -1){
 									G_get_global_Var(*(yyvsp[0].sval));
 								}else{
+									cout<<*(yyvsp[0].sval)<<":idx is========"<<idx<<"\n";
 									G_get_local_Var(idx);
 								}
 								
 							}
                         }
-#line 1960 "y.tab.cpp" /* yacc.c:1646  */
+#line 1980 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
-  case 70:
-#line 437 "parser.y" /* yacc.c:1646  */
+  case 71:
+#line 453 "parser.y" /* yacc.c:1646  */
     {
 							if(!symbolTable.isGlobal()){
 								if((yyvsp[0].idClassval)->idType == strType){
@@ -1970,11 +1990,11 @@ yyreduce:
 								}
 							}
 						}
-#line 1974 "y.tab.cpp" /* yacc.c:1646  */
+#line 1994 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
-  case 71:
-#line 447 "parser.y" /* yacc.c:1646  */
+  case 72:
+#line 463 "parser.y" /* yacc.c:1646  */
     {
                           	IDclass *c = symbolTable.lookup(*(yyvsp[-3].sval));
                           	if (c == NULL) yyerror("undeclared identifier");
@@ -1983,11 +2003,11 @@ yyreduce:
                           	else if ((yyvsp[-1].idClassval)->idData.ival >= c->arrayValue.size()) yyerror("index out of range");                        
                           	(yyval.idClassval) = new IDclass(c->arrayValue[(yyvsp[-1].idClassval)->idData.ival]);
                         }
-#line 1987 "y.tab.cpp" /* yacc.c:1646  */
+#line 2007 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
-  case 73:
-#line 457 "parser.y" /* yacc.c:1646  */
+  case 74:
+#line 473 "parser.y" /* yacc.c:1646  */
     {
                           	Trace("-expression");
                           	if ((yyvsp[0].idClassval)->idType != intType && (yyvsp[0].idClassval)->idType != realType) yyerror("operator error"); /* operator check */
@@ -1995,11 +2015,11 @@ yyreduce:
                           	(yyval.idClassval) = c;
 							if((yyvsp[0].idClassval)->idType == intType) G_Operator('m');
                         }
-#line 1999 "y.tab.cpp" /* yacc.c:1646  */
+#line 2019 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
-  case 74:
-#line 465 "parser.y" /* yacc.c:1646  */
+  case 75:
+#line 481 "parser.y" /* yacc.c:1646  */
     {
                           	Trace("expression * expression");
                           	if ((yyvsp[-2].idClassval)->idType != (yyvsp[0].idClassval)->idType) yyerror("* type not match"); /* type check */ 
@@ -2009,11 +2029,11 @@ yyreduce:
                           	(yyval.idClassval) = c;
 							if((yyvsp[-2].idClassval)->idType == intType) G_Operator('*');
                         }
-#line 2013 "y.tab.cpp" /* yacc.c:1646  */
+#line 2033 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
-  case 75:
-#line 475 "parser.y" /* yacc.c:1646  */
+  case 76:
+#line 491 "parser.y" /* yacc.c:1646  */
     {
                           	Trace("expression / expression");
 							if ((yyvsp[-2].idClassval)->idType != (yyvsp[0].idClassval)->idType) yyerror("/type not match"); /* type check */ 
@@ -2023,11 +2043,11 @@ yyreduce:
                           	(yyval.idClassval) = c;
 							if((yyvsp[-2].idClassval)->idType == intType) G_Operator('/');
                         }
-#line 2027 "y.tab.cpp" /* yacc.c:1646  */
+#line 2047 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
-  case 76:
-#line 485 "parser.y" /* yacc.c:1646  */
+  case 77:
+#line 501 "parser.y" /* yacc.c:1646  */
     {
                           	Trace("expression + expression");
                           	if ((yyvsp[-2].idClassval)->idType != (yyvsp[0].idClassval)->idType) yyerror("+ type not match"); /* type check */ 
@@ -2037,11 +2057,11 @@ yyreduce:
                           	(yyval.idClassval) = c;
 							if((yyvsp[-2].idClassval)->idType == intType) G_Operator('+');
                         }
-#line 2041 "y.tab.cpp" /* yacc.c:1646  */
+#line 2061 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
-  case 77:
-#line 495 "parser.y" /* yacc.c:1646  */
+  case 78:
+#line 511 "parser.y" /* yacc.c:1646  */
     {
                           	Trace("expression - expression");
                           	if ((yyvsp[-2].idClassval)->idType != (yyvsp[0].idClassval)->idType) yyerror("- type not match"); /* type check */ 
@@ -2051,11 +2071,11 @@ yyreduce:
                           	(yyval.idClassval) = c;
 							if((yyvsp[-2].idClassval)->idType == intType) G_Operator('-');
                         }
-#line 2055 "y.tab.cpp" /* yacc.c:1646  */
+#line 2075 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
-  case 78:
-#line 505 "parser.y" /* yacc.c:1646  */
+  case 79:
+#line 521 "parser.y" /* yacc.c:1646  */
     {
                           	Trace("expression - expression");
                           	if ((yyvsp[-2].idClassval)->idType != (yyvsp[0].idClassval)->idType) yyerror("- type not match"); /* type check */ 
@@ -2064,11 +2084,11 @@ yyreduce:
                           	(yyval.idClassval) = c;
 							if((yyvsp[-2].idClassval)->idType == intType) G_Operator('%');
                         }
-#line 2068 "y.tab.cpp" /* yacc.c:1646  */
+#line 2088 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
-  case 79:
-#line 514 "parser.y" /* yacc.c:1646  */
+  case 80:
+#line 530 "parser.y" /* yacc.c:1646  */
     {
 	                        Trace("expression && expression");
 	                        if ((yyvsp[-2].idClassval)->idType != (yyvsp[0].idClassval)->idType) yyerror("AND type not match"); /* type check */
@@ -2077,11 +2097,11 @@ yyreduce:
                           	(yyval.idClassval) = c;
 							if ((yyvsp[-2].idClassval)->idType == boolType) G_Operator('&');
                         }
-#line 2081 "y.tab.cpp" /* yacc.c:1646  */
+#line 2101 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
-  case 80:
-#line 523 "parser.y" /* yacc.c:1646  */
+  case 81:
+#line 539 "parser.y" /* yacc.c:1646  */
     {
                           	Trace("expression || expression");
                           	if ((yyvsp[-2].idClassval)->idType != (yyvsp[0].idClassval)->idType) yyerror("OR type not match"); /* type check */
@@ -2090,11 +2110,11 @@ yyreduce:
                           	(yyval.idClassval) = c;
 							if ((yyvsp[-2].idClassval)->idType == boolType) G_Operator('|');
                         }
-#line 2094 "y.tab.cpp" /* yacc.c:1646  */
+#line 2114 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
-  case 81:
-#line 532 "parser.y" /* yacc.c:1646  */
+  case 82:
+#line 548 "parser.y" /* yacc.c:1646  */
     {
                           	Trace("expression < expression");
                           	if ((yyvsp[-2].idClassval)->idType != (yyvsp[0].idClassval)->idType) yyerror("< type not match"); /* type check */	
@@ -2104,11 +2124,11 @@ yyreduce:
                           	(yyval.idClassval) = c;	
 							G_Compare(IFLT);  
                         }
-#line 2108 "y.tab.cpp" /* yacc.c:1646  */
+#line 2128 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
-  case 82:
-#line 542 "parser.y" /* yacc.c:1646  */
+  case 83:
+#line 558 "parser.y" /* yacc.c:1646  */
     {
                           	Trace("expression > expression");
                           	if ((yyvsp[-2].idClassval)->idType != (yyvsp[0].idClassval)->idType) yyerror("> type not match"); /* type check */	
@@ -2118,11 +2138,11 @@ yyreduce:
                           	(yyval.idClassval) = c;	
 							G_Compare(IFGT);  
                         }
-#line 2122 "y.tab.cpp" /* yacc.c:1646  */
+#line 2142 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
-  case 83:
-#line 552 "parser.y" /* yacc.c:1646  */
+  case 84:
+#line 568 "parser.y" /* yacc.c:1646  */
     {
                           	Trace("expression <= expression");
 							if ((yyvsp[-2].idClassval)->idType != (yyvsp[0].idClassval)->idType) yyerror("LE type not match"); /* type check */	
@@ -2132,11 +2152,11 @@ yyreduce:
                           	(yyval.idClassval) = c;	 
 							G_Compare(IFLE);                  
                         }
-#line 2136 "y.tab.cpp" /* yacc.c:1646  */
+#line 2156 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
-  case 84:
-#line 562 "parser.y" /* yacc.c:1646  */
+  case 85:
+#line 578 "parser.y" /* yacc.c:1646  */
     {
                             Trace("expression == expression");
                             if ((yyvsp[-2].idClassval)->idType != (yyvsp[0].idClassval)->idType) yyerror("EE type not match"); /* type check */	                         	
@@ -2144,11 +2164,11 @@ yyreduce:
                           	(yyval.idClassval) = c;	
 							G_Compare(IFEE);  
                         }
-#line 2148 "y.tab.cpp" /* yacc.c:1646  */
+#line 2168 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
-  case 85:
-#line 570 "parser.y" /* yacc.c:1646  */
+  case 86:
+#line 586 "parser.y" /* yacc.c:1646  */
     {
                           	Trace("expression >= expression");
                           	if ((yyvsp[-2].idClassval)->idType != (yyvsp[0].idClassval)->idType) yyerror("GE type not match"); /* type check */	
@@ -2158,11 +2178,11 @@ yyreduce:
                           	(yyval.idClassval) = c;	
 							G_Compare(IFGE);  
                         }
-#line 2162 "y.tab.cpp" /* yacc.c:1646  */
+#line 2182 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
-  case 86:
-#line 580 "parser.y" /* yacc.c:1646  */
+  case 87:
+#line 596 "parser.y" /* yacc.c:1646  */
     {
                           	Trace("expression != expression");
                           	if ((yyvsp[-2].idClassval)->idType != (yyvsp[0].idClassval)->idType) yyerror("NE type not match"); /* type check */              
@@ -2171,11 +2191,11 @@ yyreduce:
                           	(yyval.idClassval) = c;	
 							G_Compare(IFNE);  
                         }
-#line 2175 "y.tab.cpp" /* yacc.c:1646  */
+#line 2195 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
-  case 87:
-#line 589 "parser.y" /* yacc.c:1646  */
+  case 88:
+#line 605 "parser.y" /* yacc.c:1646  */
     {
                           	Trace("!expression");
                           	if ((yyvsp[0].idClassval)->idType != boolType) yyerror("!operator error"); /* operator check */                                   
@@ -2184,20 +2204,20 @@ yyreduce:
                           	(yyval.idClassval) = c;
 							G_Operator('!');
                         }
-#line 2188 "y.tab.cpp" /* yacc.c:1646  */
+#line 2208 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
-  case 88:
-#line 598 "parser.y" /* yacc.c:1646  */
+  case 89:
+#line 614 "parser.y" /* yacc.c:1646  */
     {
                           	Trace("(expression)");
                           	(yyval.idClassval) = (yyvsp[-1].idClassval);
                         }
-#line 2197 "y.tab.cpp" /* yacc.c:1646  */
+#line 2217 "y.tab.cpp" /* yacc.c:1646  */
     break;
 
 
-#line 2201 "y.tab.cpp" /* yacc.c:1646  */
+#line 2221 "y.tab.cpp" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -2425,7 +2445,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 603 "parser.y" /* yacc.c:1906  */
+#line 619 "parser.y" /* yacc.c:1906  */
 
 
 void yyerror(string s){

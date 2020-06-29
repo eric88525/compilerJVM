@@ -3,7 +3,7 @@ object global
 	val a = false
 	val b = 19
 
-	def globall(): boolean
+	def add(): boolean
 	{
 		if(b>50)
 			println("big")
@@ -15,7 +15,7 @@ object global
 	def main ()
 	{
 		var bool
-		bool = globall()
+		bool = add()
 		println(bool)
 	}
 }
