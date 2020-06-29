@@ -17,7 +17,7 @@ def main ( )
 if(a>5){
   println (c)
 }
-while(xx==5 || xx==3 && xx!=4){
+while(xx==5 || xx==3 || xx==4){
   println (c)
   xx = xx-1
 }

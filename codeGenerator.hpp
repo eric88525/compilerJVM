@@ -123,13 +123,6 @@ void G_set_local_Var(int idx)
 {
   ex << "\t\tistore " << idx << "\n";
 }
-
-// Const
-void G_const_int(int idIndex, int value)
-{
-  ex << "\t\tsipush " << value << "\n";
-}
-
 //----------------
 
 void G_main_Start()
@@ -256,7 +249,7 @@ void G_const_Str(string s)
 
 void G_const_Int(int i)
 {
-  ex << "\t\tsipush " << i << endl;
+  ex << "\t\tldc " << i << endl;
 }
 
 void G_Operator(char op)

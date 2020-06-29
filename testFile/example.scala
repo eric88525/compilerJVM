@@ -3,7 +3,7 @@
  */
 
 object example {
-  val a = 5
+  val a = 2000
   var c:int
 
   // function declaration
