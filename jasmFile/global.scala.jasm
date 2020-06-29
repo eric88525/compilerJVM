@@ -1,0 +1,46 @@
+class global{
+	method public static int globall()
+	max_stack 15
+	max_locals 15
+	{
+		sipush 19
+		sipush 50
+		isub
+		ifgt L0
+		iconst_0
+		goto L1
+		nop
+L0:
+		iconst_1
+		nop
+L1:
+		ifeq L2
+		getstatic java.io.PrintStream java.lang.System.out
+		ldc "big"
+		invokevirtual void java.io.PrintStream.println(java.lang.String)
+		nop
+L2:
+		sipush 19
+		sipush 20
+		isub
+		iflt L4
+		iconst_0
+		goto L5
+		nop
+L4:
+		iconst_1
+		nop
+L5:
+		ifeq L6
+		getstatic java.io.PrintStream java.lang.System.out
+		ldc "small"
+		invokevirtual void java.io.PrintStream.println(java.lang.String)
+		nop
+L6:
+		sipush 0
+		ireturn
+	}
+	method public static void main(java.lang.String[])
+	max_stack 15
+	max_locals 15
+	{
