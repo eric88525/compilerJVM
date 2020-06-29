@@ -1,4 +1,4 @@
-# Compiler yacc HW3
+# Compiler JVM HW3
 + B10615047 陳哲緯
 # Compile
 + make
