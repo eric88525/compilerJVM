@@ -12,7 +12,7 @@ y.tab.cpp: parser.y
 clean:
 	rm compiler lex.yy.cpp y.tab.* ./jasmFile/*.jasm *.class
 
-run: compiler
+test: compiler
 	./compiler ./testFile/$(file).scala
 	./javaa ./jasmFile/$(file).scala.jasm
 	java $(file)

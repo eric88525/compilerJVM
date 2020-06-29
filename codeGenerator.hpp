@@ -5,37 +5,39 @@
 
 using namespace std;
 
-struct Label
+struct label
 {
-  int count;
-  int loop_flag;
-  Label(int num)
+  // count
+  int C;
+  //flag
+  int LF;
+  label(int num)
   {
-    count = num;
-    loop_flag = -1;
+    C = num;
+    LF = -1;
   };
 };
 
 class LabelManager
 {
 private:
-  int labelCount;
+  int counts;
 
 public:
-  stack<Label> lStack;
+  stack<label> lStack;
   LabelManager()
   {
-    labelCount = 0;
+    counts = 0;
   }
-  void pushNLabel(int n)
+  void pushNLable(int n)
   {
-    lStack.push(Label(labelCount));
-    labelCount += n;
+    lStack.push(label(counts));
+    counts += n;
   }
   void NLabel(int n)
   {
-    lStack.top().count += n;
-    labelCount += n;
+    lStack.top().C += n;
+    counts += n;
   }
   void popLabel()
   {
@@ -43,15 +45,15 @@ public:
   }
   int takeLabel(int n)
   {
-    return lStack.top().count + n;
+    return lStack.top().C + n;
   }
   int getLable()
   {
-    return labelCount++;
+    return counts++;
   }
   int getFlag()
   {
-    return lStack.top().loop_flag;
+    return lStack.top().LF;
   }
 };
 LabelManager lm;
@@ -357,7 +359,7 @@ void G_If(string mode)
 {
   if (mode == "if_start")
   { // if start
-    lm.pushNLabel(2);
+    lm.pushNLable(2);
     ex << "\t\tifeq L" << lm.takeLabel(0) << endl;
   }
   else if (mode == "else")
@@ -384,7 +386,7 @@ void G_While(string mode)
 {
   if (mode == "while_start")
   {
-    lm.pushNLabel(1);
+    lm.pushNLable(4);
     ex << "\t\tnop" << endl
        << "L" << lm.takeLabel(0) << ":" << endl;
   }

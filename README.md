@@ -1,13 +1,16 @@
-# Compiler yacc HW2
+# Compiler yacc HW3
 + B10615047 陳哲緯
 # Compile
 + make
 # Do the test
-+ make test
++ first,put your filename.scala in ./testFile
++ make test file=filename
 # What i change?
-+ 新增symbols.hpp 用來建造symboltable 和  symboltablelist
-+ 新增IDclass.hpp 
-+ scanner部分，修正註解的bug，新增printToken
++ add codeGenerator
++ add getIndex in symbols.hpp
++ add javaa and lot of code to generato java code
 + 更多細節可參考commit紀錄
+# Clean
++ make clean
 # Git link
-+ https://github.com/eric88525/compileryacc.git
++ https://github.com/eric88525/compilerJVM.git

@@ -1,9 +1,9 @@
 object test {
 // constants and variables
-var xx = 20
+var xx = 5
+
 val a = 5
-var c : int
-var d:int = xx
+var c : int = 30
 // procedure declaration
 def add(a:int, b:int, z:char): int
 {
@@ -17,8 +17,9 @@ def main ( )
 if(a>5){
   println (c)
 }
-while(a==5 || a==3 && a!=4){
+while(xx==5 || xx==3 && xx!=4){
   println (c)
+  xx = xx-1
 }
 c = a*3
 println (c)
