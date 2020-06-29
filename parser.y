@@ -134,7 +134,19 @@ var_dec:				VAR ID ':' var_type
 							}else if(idx>=0){
 								G_local_Var_value(idx,val);
 							}
-
+						}
+						| VAR ID
+						{
+							Trace("ID");
+							IDclass* c = new IDclass(variableFlag,None,false);
+							if(symbolTable.insert(*$2,*c) == -1) yyerror("var_dec redefine");
+							int idx = symbolTable.getIndex(*$2);
+							int val = $4->getValue();
+							if(idx == -1){
+								G_global_Var_value(*$2,0);
+							}else if(idx>=0){
+								G_local_Var_value(idx,0);
+							}
 						}
 						;			
 /* variable type */
@@ -235,11 +247,12 @@ stament:				ID '=' expression
 								yyerror("variable not declare!");
 							}else if(c->idFlag!=variableFlag){
 								yyerror("this is not variable");
-							}else if(c->idType != $3->idType){
+							}else if(c->idType != $3->idType 	&& c->idType!=None){
 								yyerror("variable type not the same");
 							} else{
 								c->init = true;
 								c->setValue(*$3);
+								c -> idType = $3->idType;
 								if (c->idType == intType || c->idType == boolType || c->idType == charType) {
                             		int idx = symbolTable.getIndex(*$1);
                             		if (idx == -1) G_set_global_Var(*$1);
@@ -251,19 +264,19 @@ stament:				ID '=' expression
 						{
 							G_print_Start();
 						} 
-						PRINT expression
+						PRINT '(' expression ')'
 						{
 							Trace("stament: print expression");
-							G_print($3 ->idType);
+							G_print($4 ->idType);
 						}
 						|
 						{
 							G_print_Start();
 						}   
-						PRINTLN expression 
+						PRINTLN '(' expression ')'
 						{
 							Trace("stament: println expression");
-							G_println($3->idType);
+							G_println($4->idType);
 						} 
 						|  READ ID
 						{
@@ -598,7 +611,6 @@ expression              : ID
                         {
                           	Trace("(expression)");
                           	$$ = $2;
-
                         }
                         ;			
 %%
@@ -613,8 +625,12 @@ int main(int argc, char *argv[])
 
 if(argc==2){
 	yyin = fopen(argv[1],"r");
+	
 	filename = string(argv[1]);
 	filename += ".jasm";
+	string jasmfolder = "jasmFile";
+	filename = filename.replace(2,8,jasmfolder,0,8);
+	//./testFile/test1.scala.jasmis
 	ex.open(filename);
 
 }else{

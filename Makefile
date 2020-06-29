@@ -10,9 +10,9 @@ y.tab.cpp: parser.y
 	yacc -d parser.y -o y.tab.cpp
 
 clean:
-	rm compiler lex.yy.cpp y.tab.* *.jasm
+	rm compiler lex.yy.cpp y.tab.* ./jasmFile/*.jasm *.class
 
 run: compiler
-	./compiler $(file).scala
-	./javaa $(file).scala.jasm
+	./compiler ./testFile/$(file).scala
+	./javaa ./jasmFile/$(file).scala.jasm
 	java $(file)
